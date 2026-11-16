@@ -30,7 +30,7 @@ class AdminPanelTest extends TestCase
             'hero-slides' => HeroSlide::create(['name' => 'Jungle', 'kind' => 'banner', 'image' => 'site/x.webp']),
             'about-slides' => AboutSlide::create(['name' => 'Classic']),
             'about-points' => AboutPoint::create(['title' => 'Point']),
-            'social-photos' => SocialPhoto::create(['image' => 'site/x.webp']),
+            'social-photos' => SocialPhoto::create(['image' => null, 'instagram_url' => 'https://www.instagram.com/reel/AbC123/']),
             'events' => Event::create(['title' => 'Ev', 'slug' => 'ev']),
             'blog-posts' => BlogPost::create(['title' => 'Post', 'slug' => 'post']),
         ];

@@ -49,9 +49,17 @@ class SocialPhotoResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-                FileUpload::make('image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()->required(),
+                FileUpload::make('image')->label('Card photo')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()
+                    ->helperText('Only the first three items are shown as cards on the page, and they need a photo. Further items are reachable with the arrows in the popup.'),
                 TextInput::make('alt')->label('Alt text'),
-                TextInput::make('url')->label('Link (optional)'),
+                FileUpload::make('video')->label('Reel video (MP4)')->disk('public')->directory('reels')->visibility('public')
+                    ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/quicktime'])->maxSize(102400)
+                    ->helperText('Plays automatically (muted) in the popup. Use the original MP4 of the reel, up to 100 MB. If empty, the Instagram embed is shown instead (it cannot autoplay).'),
+                TextInput::make('instagram_url')->label('Instagram reel or post link')
+                    ->regex('~^https?://(www\.)?instagram\.com/(reel|reels|p|tv)/[A-Za-z0-9_-]+~i')
+                    ->validationMessages(['regex' => 'Paste a link like https://www.instagram.com/reel/XXXX/ (a reel or post).'])
+                    ->helperText('Opens in the popup when the card is clicked. Extra text after the link (utm_source...) is removed automatically.'),
+                TextInput::make('url')->label('Other link (optional)'),
                 TextInput::make('sort_order')->numeric()->default(0)->helperText('Lower numbers appear first.'),
                 Toggle::make('is_active')->label('Active')->default(true),
         ]);
@@ -62,6 +70,7 @@ class SocialPhotoResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')->disk('public'),
+                TextColumn::make('instagram_url')->label('Instagram')->limit(40),
                 TextColumn::make('alt'),
                 TextColumn::make('sort_order')->sortable(),
                 IconColumn::make('is_active')->boolean()->label('Active'),

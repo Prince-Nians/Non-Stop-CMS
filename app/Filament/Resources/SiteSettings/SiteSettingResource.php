@@ -49,7 +49,7 @@ class SiteSettingResource extends Resource
                 TextInput::make('facebook_url')->label('Facebook')->url(),
                 TextInput::make('youtube_url')->label('YouTube')->url(),
                 TextInput::make('linkedin_url')->label('LinkedIn')->url(),
-                TextInput::make('twitter_url')->label('Twitter / X')->url(),
+                TextInput::make('twitter_url')->label('X (Twitter)')->url(),
             ]),
             Section::make('Form notifications')->description('Where new enquiries are emailed.')->columns(2)->schema([
                 TextInput::make('contact_notify_email')->label('Contact form')->email(),
