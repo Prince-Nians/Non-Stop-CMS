@@ -14,8 +14,10 @@ if [ -z "${APP_URL:-}" ] && [ -n "${RENDER_EXTERNAL_URL:-}" ]; then
   export APP_URL="$RENDER_EXTERNAL_URL"
 fi
 
+mkdir -p resources/views storage/framework/views
 php artisan config:cache
-php artisan view:cache
+# View caching is only an optimisation (an API-only app may have no Blade views); never let it stop the container.
+php artisan view:cache || echo "view:cache skipped"
 
 if [ "${PUBLIC_DISK_DRIVER:-local}" = "local" ]; then
   php artisan storage:link --force || true
