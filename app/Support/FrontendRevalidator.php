@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-use App\Models\{AboutPoint, AboutSlide, HeroSlide, SiteAsset, BlogPost, Event, NavLink, PageSection, Product, Shop, SiteSetting, SocialPhoto};
+use App\Models\{AboutPoint, AboutSlide, Faq, HeroSlide, SiteAsset, BlogPost, Event, NavLink, PageSection, Product, Shop, SiteSetting, SocialPhoto};
 use Illuminate\Support\Facades\Event as Events;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 /** Tells the Next.js site to refresh its cached homepage whenever CMS content changes. */
 class FrontendRevalidator
 {
-    private const MODELS = [SiteAsset::class, HeroSlide::class, AboutPoint::class, AboutSlide::class, BlogPost::class, Event::class, NavLink::class, PageSection::class, Product::class, Shop::class, SiteSetting::class, SocialPhoto::class];
+    private const MODELS = [Faq::class, SiteAsset::class, HeroSlide::class, AboutPoint::class, AboutSlide::class, BlogPost::class, Event::class, NavLink::class, PageSection::class, Product::class, Shop::class, SiteSetting::class, SocialPhoto::class];
 
     private static bool $pending = false;
 

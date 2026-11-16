@@ -43,6 +43,7 @@ class SiteSettingResource extends Resource
             Section::make('Contact details')->columns(2)->schema([
                 TextInput::make('phone')->tel(),
                 TextInput::make('email')->email(),
+                TextInput::make('address')->label('Address (shown on the Contact page)')->columnSpanFull(),
                 TextInput::make('copyright_text')->columnSpanFull(),
             ]),
             Section::make('Social media')->columns(2)->schema([

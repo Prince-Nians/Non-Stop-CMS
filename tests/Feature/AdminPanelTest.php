@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\{AboutPoint, AboutSlide, HeroSlide, SiteAsset, BlogPost, Event, NavLink, PageSection, Product, Shop, SocialPhoto, User};
+use App\Models\{AboutPoint, AboutSlide, Faq, HeroSlide, SiteAsset, BlogPost, Event, NavLink, PageSection, Product, Shop, SocialPhoto, User};
 use Tests\TestCase;
 
 class AdminPanelTest extends TestCase
@@ -27,6 +27,7 @@ class AdminPanelTest extends TestCase
             'shops' => Shop::create(['name' => 'Zepto', 'slug' => 'zepto', 'url' => 'https://zepto.test']),
             'nav-links' => NavLink::create(['location' => 'header', 'label' => 'Home', 'url' => '#top']),
             'page-sections' => PageSection::create(['key' => 'hero', 'title' => 'Hello']),
+            'faqs' => Faq::create(['question' => 'Q?', 'answer' => 'A.']),
             'site-assets' => SiteAsset::create(['key' => 'strip_hero', 'label' => 'Strip', 'image' => 'site/x.svg']),
             'hero-slides' => HeroSlide::create(['name' => 'Jungle', 'kind' => 'banner', 'image' => 'site/x.webp']),
             'about-slides' => AboutSlide::create(['name' => 'Classic']),
