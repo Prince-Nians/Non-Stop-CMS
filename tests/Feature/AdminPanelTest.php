@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Models\{AboutPoint, BlogPost, Event, NavLink, PageSection, Product, Shop, SocialPhoto, User};
+use App\Models\{AboutPoint, AboutSlide, BlogPost, Event, NavLink, PageSection, Product, Shop, SocialPhoto, User};
 use Tests\TestCase;
 
 class AdminPanelTest extends TestCase
@@ -27,6 +27,7 @@ class AdminPanelTest extends TestCase
             'shops' => Shop::create(['name' => 'Zepto', 'slug' => 'zepto', 'url' => 'https://zepto.test']),
             'nav-links' => NavLink::create(['location' => 'header', 'label' => 'Home', 'url' => '#top']),
             'page-sections' => PageSection::create(['key' => 'hero', 'title' => 'Hello']),
+            'about-slides' => AboutSlide::create(['name' => 'Classic']),
             'about-points' => AboutPoint::create(['title' => 'Point']),
             'social-photos' => SocialPhoto::create(['image' => 'site/x.webp']),
             'events' => Event::create(['title' => 'Ev', 'slug' => 'ev']),
