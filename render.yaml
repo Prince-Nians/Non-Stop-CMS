@@ -1,5 +1,5 @@
 # Render Blueprint (FREE plan, demo setup): the admin (CMS).
-# It uses the SAME Postgres database as nonstop-backend (created by that repo's blueprint), so deploy the backend first.
+# It uses the SAME external Postgres database (Neon) as nonstop-backend, so paste the same DB_URL.
 # Values marked `sync: false` are asked for when you apply the blueprint.
 services:
   - type: web
@@ -20,7 +20,9 @@ services:
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_URL
-        sync: false                # Render > nonstop-db > Connections > "Internal Database URL"
+        sync: false                # the SAME Neon connection string as the backend
+      - key: DB_SSLMODE
+        value: require
       - key: LOG_CHANNEL
         value: stderr
       - key: LOG_LEVEL
