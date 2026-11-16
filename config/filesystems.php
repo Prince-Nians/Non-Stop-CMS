@@ -41,11 +41,11 @@ return [
         // Where uploaded images/videos live: PUBLIC_DISK_DRIVER=local (default, a folder), s3 (any S3-compatible bucket)
         // or database (files kept in the shared database; no bucket, ideal for demos). Must match the backend's setting.
         'public' => match (env('PUBLIC_DISK_DRIVER', 'local')) {
-            // Files live in the shared database (media_files). PUBLIC_DISK_URL must be the backend's /media address,
-            // e.g. https://<backend>.onrender.com/media, because the backend is what serves them (demo setup).
+            // Files live in the shared database (media_files). The CMS serves them itself at /media/... (same address as
+            // the admin, so form previews are same-origin). Leave PUBLIC_DISK_URL empty unless you need to override it.
             'database' => [
                 'driver' => 'database',
-                'url' => env('PUBLIC_DISK_URL'),
+                'url' => env('PUBLIC_DISK_URL') ?: rtrim(env('APP_URL', 'http://localhost'), '/').'/media',
                 'throw' => false,
                 'report' => false,
             ],

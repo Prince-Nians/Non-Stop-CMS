@@ -8,10 +8,11 @@ use Tests\TestCase;
 
 class DatabaseStorageTest extends TestCase
 {
+    use \Tests\Concerns\SetsEnv;
+
     protected function setUp(): void
     {
-        putenv('PUBLIC_DISK_DRIVER=database');
-        $_ENV['PUBLIC_DISK_DRIVER'] = $_SERVER['PUBLIC_DISK_DRIVER'] = 'database';
+        $this->setEnv('PUBLIC_DISK_DRIVER', 'database');
         parent::setUp();
         // In production this is the backend's /media address (PUBLIC_DISK_URL).
         config(['filesystems.disks.public.url' => 'https://api.example.com/media']);
@@ -19,8 +20,7 @@ class DatabaseStorageTest extends TestCase
 
     protected function tearDown(): void
     {
-        putenv('PUBLIC_DISK_DRIVER');
-        unset($_ENV['PUBLIC_DISK_DRIVER'], $_SERVER['PUBLIC_DISK_DRIVER']);
+        $this->restoreEnv();
         parent::tearDown();
     }
 
@@ -50,5 +50,18 @@ class DatabaseStorageTest extends TestCase
 
         $this->assertSame('video-bytes', Storage::disk('public')->get('reels/up.mp4'));
         $this->assertSame('video/mp4', Storage::disk('public')->mimeType('reels/up.mp4'));
+    }
+
+    public function test_the_cms_serves_its_own_media_so_form_previews_are_same_origin(): void
+    {
+        // The disk URL defaults to the CMS itself (APP_URL/media), not another server.
+        config(['filesystems.disks.public.url' => rtrim(config('app.url'), '/').'/media']);
+        Storage::forgetDisk('public');
+        Storage::disk('public')->put('site/preview.webp', 'webp-bytes');
+
+        $this->assertSame(rtrim(config('app.url'), '/').'/media/site/preview.webp', Storage::disk('public')->url('site/preview.webp'));
+
+        $this->get('/media/site/preview.webp')->assertOk()->assertContent('webp-bytes')->assertHeader('Access-Control-Allow-Origin', '*');
+        $this->get('/media/site/nope.webp')->assertNotFound();
     }
 }

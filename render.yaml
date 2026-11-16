@@ -43,11 +43,10 @@ services:
         sync: false
       - key: ADMIN_PASSWORD
         sync: false
-      # Uploads are kept in the shared database; the BACKEND serves them. Paste the backend address + /media
+      # Uploads are kept in the shared database. The CMS serves them itself at <this-service>/media (previews work
+      # without the backend); the website gets its image links from the backend, which serves the same files.
       - key: PUBLIC_DISK_DRIVER
         value: database
-      - key: PUBLIC_DISK_URL
-        sync: false                # https://<your-backend>.onrender.com/media
       # After every content change the CMS asks the website to refresh
       - key: FRONTEND_REVALIDATE_URL
         sync: false                # https://<your-site>.vercel.app/api/revalidate

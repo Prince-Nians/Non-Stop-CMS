@@ -39,9 +39,8 @@ When `nonstop_backend` adds a migration: update the matching model and Filament 
 ## Deploy on Render (free demo)
 
 1. Deploy `nonstop_backend` first: it creates the tables in the shared Neon Postgres database and owns the schema.
-2. **New → Blueprint** → this repo. Render asks for six values:
+2. **New → Blueprint** → this repo. Render asks for five values:
    - `DB_URL`: the **same Neon connection string** as the backend (direct, not pooled, ending in `?sslmode=require`)
-   - `PUBLIC_DISK_URL`: `https://<your-backend>.onrender.com/media` (uploads are kept in the database; the backend serves them)
    - `ADMIN_EMAIL`, `ADMIN_PASSWORD`: the first admin login
    - `FRONTEND_REVALIDATE_URL`: `https://<your-site>.vercel.app/api/revalidate`
    - `REVALIDATE_SECRET`: any long random string, the same one set in Vercel

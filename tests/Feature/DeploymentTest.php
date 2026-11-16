@@ -10,33 +10,20 @@ use Tests\TestCase;
 
 class DeploymentTest extends TestCase
 {
-    private array $touched = [];
-
-    private function env(string $key, ?string $value): void
-    {
-        $this->touched[] = $key;
-        if ($value === null) {
-            putenv($key);
-            unset($_ENV[$key], $_SERVER[$key]);
-        } else {
-            putenv("$key=$value");
-            $_ENV[$key] = $_SERVER[$key] = $value;
-        }
-    }
+    use \Tests\Concerns\SetsEnv;
 
     protected function tearDown(): void
     {
-        foreach ($this->touched as $key) {
-            $this->env($key, null);
-        }
+        $this->restoreEnv();
         parent::tearDown();
     }
+
 
     public function test_public_disk_switches_to_s3_and_uses_no_per_file_acls(): void
     {
         foreach (['PUBLIC_DISK_DRIVER' => 's3', 'AWS_ACCESS_KEY_ID' => 'k', 'AWS_SECRET_ACCESS_KEY' => 's', 'AWS_BUCKET' => 'nonstop',
             'AWS_URL' => 'https://cdn.example.com', 'AWS_ENDPOINT' => 'https://acct.r2.cloudflarestorage.com'] as $k => $v) {
-            $this->env($k, $v);
+            $this->setEnv($k, $v);
         }
         $this->refreshApplication();
 
@@ -55,13 +42,13 @@ class DeploymentTest extends TestCase
 
     public function test_admin_seeding_never_resets_an_existing_password(): void
     {
-        $this->env('ADMIN_EMAIL', 'boss@example.com');
-        $this->env('ADMIN_PASSWORD', 'first-password-123');
+        $this->setEnv('ADMIN_EMAIL', 'boss@example.com');
+        $this->setEnv('ADMIN_PASSWORD', 'first-password-123');
         $this->seed(DatabaseSeeder::class);
         $user = User::where('email', 'boss@example.com')->first();
         $user->update(['password' => 'changed-by-the-admin-456']);
 
-        $this->env('ADMIN_PASSWORD', 'second-password-789');
+        $this->setEnv('ADMIN_PASSWORD', 'second-password-789');
         $this->seed(DatabaseSeeder::class); // a redeploy
 
         $this->assertTrue(\Illuminate\Support\Facades\Hash::check('changed-by-the-admin-456', $user->fresh()->password));
