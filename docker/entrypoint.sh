@@ -5,6 +5,15 @@
 set -e
 cd /var/www/html
 
+# Zero-config on Render: a stable APP_KEY is derived from APP_KEY_SEED (Render can generate that value),
+# and APP_URL defaults to the service's own public address.
+if [ -z "${APP_KEY:-}" ] && [ -n "${APP_KEY_SEED:-}" ]; then
+  export APP_KEY="$(php -r 'echo "base64:".base64_encode(hash("sha256", getenv("APP_KEY_SEED"), true));')"
+fi
+if [ -z "${APP_URL:-}" ] && [ -n "${RENDER_EXTERNAL_URL:-}" ]; then
+  export APP_URL="$RENDER_EXTERNAL_URL"
+fi
+
 php artisan config:cache
 php artisan view:cache
 

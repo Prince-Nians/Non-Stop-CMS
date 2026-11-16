@@ -36,12 +36,16 @@ Sessions and cache use files, so this app needs no tables beyond the shared cont
 
 When `nonstop_backend` adds a migration: update the matching model and Filament resource here, then copy the new migration into `tests/schema/` so tests can build the schema.
 
-## Deploy on Render
+## Deploy on Render (free demo)
 
-1. Deploy `nonstop_backend` first (it creates the shared Postgres database and owns the schema).
-2. **New → Blueprint** → this repo. Paste the database's **Internal Database URL** into `DB_URL`, set `APP_KEY` (a different key from the backend), `APP_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
-3. `FRONTEND_REVALIDATE_URL` = `https://<your-site>.vercel.app/api/revalidate` and `REVALIDATE_SECRET` = the same value as in Vercel, so edits refresh the website.
-4. Use the **same storage variables** as the backend (`PUBLIC_DISK_DRIVER=s3`, `AWS_*`), otherwise uploaded images will not reach the website.
-5. On start the container creates the first admin if missing (`RUN_SEED=true`); it never resets an existing password. Migrations stay off (`RUN_MIGRATIONS=false`).
+1. Deploy `nonstop_backend` first: it creates the shared Postgres database and owns the schema.
+2. **New → Blueprint** → this repo. Render asks for six values:
+   - `DB_URL`: nonstop-db → Connections → **Internal Database URL**
+   - `PUBLIC_DISK_URL`: `https://<your-backend>.onrender.com/media` (uploads are kept in the database; the backend serves them)
+   - `ADMIN_EMAIL`, `ADMIN_PASSWORD`: the first admin login
+   - `FRONTEND_REVALIDATE_URL`: `https://<your-site>.vercel.app/api/revalidate`
+   - `REVALIDATE_SECRET`: any long random string, the same one set in Vercel
+3. On start the container creates the admin if it is missing (never resets an existing password). The app key and `APP_URL` are filled in automatically; migrations stay off (the schema belongs to the backend).
+4. Open `https://<cms>.onrender.com/admin` and log in. Edits show on the website within moments; uploaded images appear because both apps share the database.
 
-The Docker image allows uploads up to 128 MB (reel videos).
+The free service sleeps when idle: the first request after a break takes 30–60 s. Uploads up to 128 MB are allowed by the image; the Livewire upload limit (12 MB by default) applies to the admin form.

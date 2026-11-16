@@ -38,11 +38,18 @@ return [
             'report' => false,
         ],
 
-        // Where uploaded images/videos live. PUBLIC_DISK_DRIVER=local (default) uses a folder;
-        // PUBLIC_DISK_DRIVER=s3 uses any S3-compatible bucket (AWS S3, Cloudflare R2, Backblaze B2, Spaces, MinIO).
-        // Both apps must point at the same bucket. No per-file ACLs are used: make the bucket (or its CDN / public URL) readable.
-        'public' => env('PUBLIC_DISK_DRIVER', 'local') === 's3'
-            ? [
+        // Where uploaded images/videos live: PUBLIC_DISK_DRIVER=local (default, a folder), s3 (any S3-compatible bucket)
+        // or database (files kept in the shared database; no bucket, ideal for demos). Must match the backend's setting.
+        'public' => match (env('PUBLIC_DISK_DRIVER', 'local')) {
+            // Files live in the shared database (media_files). PUBLIC_DISK_URL must be the backend's /media address,
+            // e.g. https://<backend>.onrender.com/media, because the backend is what serves them (demo setup).
+            'database' => [
+                'driver' => 'database',
+                'url' => env('PUBLIC_DISK_URL'),
+                'throw' => false,
+                'report' => false,
+            ],
+            's3' => [
                 'driver' => 's3',
                 'key' => env('AWS_ACCESS_KEY_ID'),
                 'secret' => env('AWS_SECRET_ACCESS_KEY'),
@@ -53,8 +60,8 @@ return [
                 'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
                 'throw' => false,
                 'report' => false,
-            ]
-            : [
+            ],
+            default => [
                 'driver' => 'local',
                 // The backend serves uploaded images, so locally both apps share one folder.
                 'root' => env('PUBLIC_DISK_ROOT') ?: storage_path('app/public'),
@@ -63,6 +70,7 @@ return [
                 'throw' => false,
                 'report' => false,
             ],
+        },
 
         's3' => [
             'driver' => 's3',
