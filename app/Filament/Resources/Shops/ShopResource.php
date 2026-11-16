@@ -52,7 +52,7 @@ class ShopResource extends Resource
                 TextInput::make('name')->required(),
                 TextInput::make('slug')->required()->unique(ignoreRecord: true),
                 TextInput::make('url')->url()->required()->helperText('Where the shop logo should send visitors.'),
-                FileUpload::make('logo')->image()->disk('public')->directory('site')->visibility('public')->imageEditor(),
+                FileUpload::make('logo')->image()->disk('public')->directory('site')->imageEditor(),
                 TextInput::make('sort_order')->numeric()->default(0)->helperText('Lower numbers appear first.'),
                 Toggle::make('is_active')->label('Active')->default(true),
         ]);

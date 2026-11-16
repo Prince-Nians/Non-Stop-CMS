@@ -42,7 +42,7 @@ class SiteAssetResource extends Resource
         return $schema->components([
             TextInput::make('label')->disabled()->dehydrated(false),
             TextInput::make('used_in')->label('Where it appears')->disabled()->dehydrated(false),
-            FileUpload::make('image')->disk('public')->directory('site')->visibility('public')->required()
+            FileUpload::make('image')->disk('public')->directory('site')->required()
                 ->acceptedFileTypes(['image/svg+xml', 'image/png', 'image/webp', 'image/jpeg'])
                 ->imageEditor()->maxSize(5120)
                 ->helperText('Cans: a transparent PNG cropped tightly to the can (it is stretched to the same box as the current one, so keep a similar tall shape). Checker strips: an SVG or PNG about 1500 px wide.'),

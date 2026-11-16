@@ -1,0 +1,65 @@
+# Render Blueprint: the admin (CMS). It uses the SAME Postgres database as nonstop-backend,
+# which is created by that repo's blueprint, so DB_URL is pasted in manually (Internal Database URL).
+services:
+  - type: web
+    name: nonstop-cms
+    runtime: docker
+    plan: starter
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: Non Stop CMS
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        sync: false        # run locally: php artisan key:generate --show (use a different key from the backend)
+      - key: APP_URL
+        sync: false        # https://<this-service>.onrender.com
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        sync: false        # Render > nonstop-db > "Internal Database URL"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: warning
+      - key: SESSION_DRIVER
+        value: database    # logins survive redeploys (the backend's migrations create the sessions table)
+      - key: SESSION_SECURE_COOKIE
+        value: "true"
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: RUN_MIGRATIONS
+        value: "false"     # the schema belongs to nonstop-backend
+      - key: RUN_SEED
+        value: "true"      # creates the first admin only if it does not exist yet
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      # After every content change the CMS asks the website to refresh
+      - key: FRONTEND_REVALIDATE_URL
+        sync: false        # https://<your-site>.vercel.app/api/revalidate
+      - key: REVALIDATE_SECRET
+        sync: false        # must equal the REVALIDATE_SECRET set in Vercel
+      # Shared file storage: IDENTICAL values to nonstop-backend
+      - key: PUBLIC_DISK_DRIVER
+        value: s3
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_BUCKET
+        sync: false
+      - key: AWS_DEFAULT_REGION
+        value: auto
+      - key: AWS_ENDPOINT
+        sync: false
+      - key: AWS_URL
+        sync: false
+      - key: AWS_USE_PATH_STYLE_ENDPOINT
+        value: "false"

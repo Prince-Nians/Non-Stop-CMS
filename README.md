@@ -35,3 +35,13 @@ Sessions and cache use files, so this app needs no tables beyond the shared cont
 ## Schema changes
 
 When `nonstop_backend` adds a migration: update the matching model and Filament resource here, then copy the new migration into `tests/schema/` so tests can build the schema.
+
+## Deploy on Render
+
+1. Deploy `nonstop_backend` first (it creates the shared Postgres database and owns the schema).
+2. **New → Blueprint** → this repo. Paste the database's **Internal Database URL** into `DB_URL`, set `APP_KEY` (a different key from the backend), `APP_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
+3. `FRONTEND_REVALIDATE_URL` = `https://<your-site>.vercel.app/api/revalidate` and `REVALIDATE_SECRET` = the same value as in Vercel, so edits refresh the website.
+4. Use the **same storage variables** as the backend (`PUBLIC_DISK_DRIVER=s3`, `AWS_*`), otherwise uploaded images will not reach the website.
+5. On start the container creates the first admin if missing (`RUN_SEED=true`); it never resets an existing password. Migrations stay off (`RUN_MIGRATIONS=false`).
+
+The Docker image allows uploads up to 128 MB (reel videos).

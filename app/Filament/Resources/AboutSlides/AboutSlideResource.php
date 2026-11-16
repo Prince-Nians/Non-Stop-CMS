@@ -42,7 +42,7 @@ class AboutSlideResource extends Resource
     {
         return $schema->components([
             TextInput::make('name')->required()->helperText('Shown on the slider dot, e.g. "Jungle".'),
-            FileUpload::make('can_image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()
+            FileUpload::make('can_image')->image()->disk('public')->directory('site')->imageEditor()
                 ->helperText('Transparent PNG of the can. The design shows it slightly tilted.'),
             ColorPicker::make('ribbon_color_a')->label('Ribbon colour (light)')->required(),
             ColorPicker::make('ribbon_color_b')->label('Ribbon colour (dark)')->required(),

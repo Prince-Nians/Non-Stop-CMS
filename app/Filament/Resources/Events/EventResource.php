@@ -53,7 +53,7 @@ class EventResource extends Resource
                 TextInput::make('slug')->required()->unique(ignoreRecord: true)->helperText('Used in URLs. Auto-filled from the title.'),
                 Textarea::make('excerpt')->rows(3)->columnSpanFull(),
                 RichEditor::make('body')->columnSpanFull(),
-                FileUpload::make('image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor(),
+                FileUpload::make('image')->image()->disk('public')->directory('site')->imageEditor(),
                 DateTimePicker::make('starts_at'),
                 TextInput::make('location'),
                 TextInput::make('url')->label('Registration / details link'),

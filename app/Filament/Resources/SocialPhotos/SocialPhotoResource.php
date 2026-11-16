@@ -49,10 +49,10 @@ class SocialPhotoResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->components([
-                FileUpload::make('image')->label('Card photo')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()
+                FileUpload::make('image')->label('Card photo')->image()->disk('public')->directory('site')->imageEditor()
                     ->helperText('Only the first three items are shown as cards on the page, and they need a photo. Further items are reachable with the arrows in the popup.'),
                 TextInput::make('alt')->label('Alt text'),
-                FileUpload::make('video')->label('Reel video (MP4)')->disk('public')->directory('reels')->visibility('public')
+                FileUpload::make('video')->label('Reel video (MP4)')->disk('public')->directory('reels')
                     ->acceptedFileTypes(['video/mp4', 'video/webm', 'video/quicktime'])->maxSize(102400)
                     ->helperText('Plays automatically (muted) in the popup. Use the original MP4 of the reel, up to 100 MB. If empty, the Instagram embed is shown instead (it cannot autoplay).'),
                 TextInput::make('instagram_url')->label('Instagram reel or post link')

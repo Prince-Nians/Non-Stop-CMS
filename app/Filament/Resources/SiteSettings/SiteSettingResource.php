@@ -38,7 +38,7 @@ class SiteSettingResource extends Resource
         return $schema->components([
             Section::make('Brand')->columns(2)->schema([
                 TextInput::make('site_name')->required(),
-                FileUpload::make('logo')->image()->disk('public')->directory('site')->visibility('public'),
+                FileUpload::make('logo')->image()->disk('public')->directory('site'),
             ]),
             Section::make('Contact details')->columns(2)->schema([
                 TextInput::make('phone')->tel(),

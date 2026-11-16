@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
+        // firstOrCreate: re-running (e.g. on every deploy) never resets a password someone has changed.
+        User::firstOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@nonstop.test')],
             ['name' => 'Admin', 'password' => Hash::make(env('ADMIN_PASSWORD', 'change-me-now'))]
         );

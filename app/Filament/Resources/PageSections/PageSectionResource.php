@@ -60,8 +60,8 @@ class PageSectionResource extends Resource
                 Textarea::make('description')->rows(5)->columnSpanFull(),
                 TextInput::make('button_label'),
                 TextInput::make('button_url'),
-                FileUpload::make('image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor(),
-                FileUpload::make('image_secondary')->image()->disk('public')->directory('site')->visibility('public')->imageEditor(),
+                FileUpload::make('image')->image()->disk('public')->directory('site')->imageEditor(),
+                FileUpload::make('image_secondary')->image()->disk('public')->directory('site')->imageEditor(),
                 KeyValue::make('extra')->label('Extra text fields')->columnSpanFull(),
                 Toggle::make('is_active')->label('Active')->default(true),
         ]);

@@ -46,11 +46,11 @@ class HeroSlideResource extends Resource
                 ->default('banner')->required()
                 ->disabled(fn (?HeroSlide $record) => filled($record))->dehydrated()
                 ->helperText('The stadium artwork is built into the site; only its position and visibility can be changed.'),
-            FileUpload::make('image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()
+            FileUpload::make('image')->image()->disk('public')->directory('site')->imageEditor()
                 ->visible(fn ($get) => $get('kind') !== 'stadium')
                 ->required(fn ($get) => $get('kind') !== 'stadium')
                 ->helperText('Wide banner, 1440 × 589 px or larger (2880 × 1178 is ideal for sharp screens). Keep the can and headline near the centre: on phones only the middle is shown.'),
-            FileUpload::make('mobile_image')->image()->disk('public')->directory('site')->visibility('public')->imageEditor()
+            FileUpload::make('mobile_image')->image()->disk('public')->directory('site')->imageEditor()
                 ->visible(fn ($get) => $get('kind') !== 'stadium')
                 ->helperText('Optional square or portrait version used on phones.'),
             TextInput::make('alt')->label('Image description (alt text)')

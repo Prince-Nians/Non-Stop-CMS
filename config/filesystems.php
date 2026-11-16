@@ -38,15 +38,31 @@ return [
             'report' => false,
         ],
 
-        'public' => [
-            'driver' => 'local',
-            // The backend serves uploaded images, so both apps share one folder / bucket.
-            'root' => env('PUBLIC_DISK_ROOT') ?: storage_path('app/public'),
-            'url' => env('PUBLIC_DISK_URL') ?: rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
-        ],
+        // Where uploaded images/videos live. PUBLIC_DISK_DRIVER=local (default) uses a folder;
+        // PUBLIC_DISK_DRIVER=s3 uses any S3-compatible bucket (AWS S3, Cloudflare R2, Backblaze B2, Spaces, MinIO).
+        // Both apps must point at the same bucket. No per-file ACLs are used: make the bucket (or its CDN / public URL) readable.
+        'public' => env('PUBLIC_DISK_DRIVER', 'local') === 's3'
+            ? [
+                'driver' => 's3',
+                'key' => env('AWS_ACCESS_KEY_ID'),
+                'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                'region' => env('AWS_DEFAULT_REGION', 'auto'),
+                'bucket' => env('AWS_BUCKET'),
+                'url' => env('AWS_URL'),
+                'endpoint' => env('AWS_ENDPOINT'),
+                'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
+                'throw' => false,
+                'report' => false,
+            ]
+            : [
+                'driver' => 'local',
+                // The backend serves uploaded images, so locally both apps share one folder.
+                'root' => env('PUBLIC_DISK_ROOT') ?: storage_path('app/public'),
+                'url' => env('PUBLIC_DISK_URL') ?: rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+                'visibility' => 'public',
+                'throw' => false,
+                'report' => false,
+            ],
 
         's3' => [
             'driver' => 's3',
