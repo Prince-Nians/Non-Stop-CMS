@@ -27,11 +27,11 @@ class FaqResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedQuestionMarkCircle;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Content';
+    protected static string|UnitEnum|null $navigationGroup = 'Contact Us';
 
     protected static ?string $modelLabel = 'FAQ';
 
-    protected static ?string $pluralModelLabel = 'FAQs (Contact page)';
+    protected static ?string $pluralModelLabel = 'FAQs';
 
     protected static ?string $recordTitleAttribute = 'question';
 

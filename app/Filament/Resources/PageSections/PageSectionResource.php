@@ -40,11 +40,21 @@ class PageSectionResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Homepage';
 
+    /** Which website page this tab edits (a subclass per page overrides it). */
+    protected static string $page = 'home';
+
     protected static ?string $modelLabel = 'Section';
 
     protected static ?string $pluralModelLabel = 'Sections';
 
+    protected static ?string $navigationLabel = 'Page sections';
+
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->where('page', static::$page);
+    }
 
     public static function canCreate(): bool
     {

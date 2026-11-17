@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Non Stop CMS')
-            ->navigationGroups(['Homepage', 'Content', 'Inbox', 'Site'])
+            ->navigationGroups(['Homepage', 'Contact Us', 'Content', 'Inbox', 'Site'])
             ->colors([
                 'primary' => Color::Blue,
             ])

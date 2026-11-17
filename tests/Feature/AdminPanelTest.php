@@ -27,6 +27,7 @@ class AdminPanelTest extends TestCase
             'shops' => Shop::create(['name' => 'Zepto', 'slug' => 'zepto', 'url' => 'https://zepto.test']),
             'nav-links' => NavLink::create(['location' => 'header', 'label' => 'Home', 'url' => '#top']),
             'page-sections' => PageSection::create(['key' => 'hero', 'title' => 'Hello']),
+            'contact-page-content' => PageSection::create(['key' => 'contact_hero', 'page' => 'contact', 'title' => 'CONTACT US']),
             'faqs' => Faq::create(['question' => 'Q?', 'answer' => 'A.']),
             'site-assets' => SiteAsset::create(['key' => 'strip_hero', 'label' => 'Strip', 'image' => 'site/x.svg']),
             'hero-slides' => HeroSlide::create(['name' => 'Jungle', 'kind' => 'banner', 'image' => 'site/x.webp']),
@@ -39,7 +40,7 @@ class AdminPanelTest extends TestCase
 
         foreach ($records as $slug => $record) {
             $this->get("/admin/$slug")->assertOk();
-            $this->get("/admin/$slug/{$record->getKey()}/edit")->assertOk();
+            $this->get("/admin/$slug/{$record->getKey()}/edit")->assertOk("edit $slug");
         }
         foreach (['enquiries', 'site-settings'] as $slug) {
             $this->get("/admin/$slug")->assertOk();
