@@ -56,7 +56,7 @@ class SiteSettingResource extends Resource
                 TextInput::make('contact_notify_email')->label('Contact form')->email(),
                 TextInput::make('partner_notify_email')->label('Partner form')->email(),
             ]),
-            Section::make('SEO')->columns(1)->schema([
+            Section::make('Default SEO')->description('Fallback used by any page that has no SEO of its own. Each page has its own SEO tab in its menu group.')->columns(1)->schema([
                 TextInput::make('seo_title'),
                 Textarea::make('seo_description')->rows(2),
             ]),

@@ -42,7 +42,7 @@ class AdminPanelTest extends TestCase
             $this->get("/admin/$slug")->assertOk();
             $this->get("/admin/$slug/{$record->getKey()}/edit")->assertOk("edit $slug");
         }
-        foreach (['enquiries', 'site-settings'] as $slug) {
+        foreach (['enquiries', 'site-settings', 'homepage-seo', 'contact-seo'] as $slug) {
             $this->get("/admin/$slug")->assertOk();
         }
         $this->get('/admin/products/create')->assertOk();
